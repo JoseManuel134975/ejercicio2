@@ -8,6 +8,5 @@ const observer = new IntersectionObserver((entries) => {
             entry.target.classList.add('visible');
         }
     });
-}, {
-   
+})
 
