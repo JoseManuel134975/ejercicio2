@@ -1,0 +1,40 @@
+name: Generating documentation for JS with JSDoc
+
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Choose a job'
+        required: true
+        type: choice
+        options:
+          - jsdoc
+
+jobs:
+  jsdoc:
+    if: ${{ github.event.inputs.job == 'jsdoc' }}
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Ensure JSDoc is executable
+      
+        run: chmod +x node_modules/.bin/jsdoc 
+      - name: Generate documentation
+        run: npm run docs 
+
+      - name: Deploy to GitHub Pages 
+        uses: peaceiris/actions-gh-pages@v3 
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} 
+          publish_dir: ./docs 
